@@ -1,3 +1,5 @@
+import 'package:nfc_manager/nfc_manager.dart';
+
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/agenda_item/agenda_item_widget.dart';
@@ -16,6 +18,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'home_page_model.dart';
+import '../NFC/nfc_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 export 'home_page_model.dart';
 
 class HomePageWidget extends StatefulWidget {
@@ -33,12 +37,51 @@ class HomePageWidget extends StatefulWidget {
 class _HomePageWidgetState extends State<HomePageWidget>
     with TickerProviderStateMixin {
   late HomePageModel _model;
+  ValueNotifier<dynamic> result = ValueNotifier(null);
+  void _tagRead() {
+    print("_tagRead()");
+
+    NfcManager.instance.startSession(
+        pollingOptions: {
+          NfcPollingOption.iso14443,
+          NfcPollingOption.iso15693,
+          NfcPollingOption.iso18092,
+        },
+        onDiscovered: (NfcTag tag) async {
+          try {
+            print(tag.data);
+
+            if (tag.data["ndef"]["cachedMessage"] != null) {
+              var tagValue = String.fromCharCodes(tag.data["ndef"]
+                      ["cachedMessage"]["records"][0]["payload"])
+                  .substring(3);
+              print(tagValue);
+              result.value = tagValue;
+              if (tagValue == 'chatPDP') {
+                final fire = FirebaseFirestore.instance;
+                final currentUser = FirebaseAuth.instance.currentUser;
+
+                fire
+                    .collection("users")
+                    .doc(currentUser!.uid)
+                    .update({'attended': true});
+              }
+
+              NfcManager.instance.stopSession();
+            }
+          } catch (e) {
+            print("------");
+            print(e);
+          }
+        });
+  }
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+
     _model = createModel(context, () => HomePageModel());
 
     // On page load action.
@@ -190,10 +233,13 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           borderRadius:
                                               BorderRadius.circular(6.0),
                                         ),
-                                        child: Icon(
-                                          Icons.nfc,
-                                          color: Color(0xFF3276E6),
-                                          size: 25.0,
+                                        child: IconButton(
+                                          onPressed: _tagRead,
+                                          icon: Icon(
+                                            Icons.nfc,
+                                            color: Color(0xFF3276E6),
+                                            size: 25.0,
+                                          ),
                                         ),
                                       ),
                                       Container(

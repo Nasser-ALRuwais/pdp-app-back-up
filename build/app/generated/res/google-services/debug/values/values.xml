@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">855529549172-dkgf232hn4nn5i8lcivm3tp4s9afnito.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">855529549172</string>
+    <string name="google_api_key" translatable="false">AIzaSyBtfNX8hrvZjsykAly2PiL6DCoZ_cuE2m4</string>
+    <string name="google_app_id" translatable="false">1:855529549172:android:453b5960373ebc6b2b1021</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBtfNX8hrvZjsykAly2PiL6DCoZ_cuE2m4</string>
+    <string name="google_storage_bucket" translatable="false">pdp-conference-2023.appspot.com</string>
+    <string name="project_id" translatable="false">pdp-conference-2023</string>
+</resources>

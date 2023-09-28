@@ -5,7 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
 import '/backend/backend.dart';
-
+import '../../p_d_p_app/NFC/nfc_page.dart';
 import '../../auth/base_auth_user_provider.dart';
 
 import '/index.dart';
@@ -131,6 +131,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'GamePage',
           path: '/gamePage',
           builder: (context, params) => GamePageWidget(),
+        ),
+        FFRoute(
+          name: 'NFCPage',
+          path: '/NFCPage',
+          builder: (context, params) => NFCPage(),
         ),
         FFRoute(
           name: 'profile',

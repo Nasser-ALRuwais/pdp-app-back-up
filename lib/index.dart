@@ -16,3 +16,4 @@ export '/maybe/password_change/password_change_widget.dart'
     show PasswordChangeWidget;
 export '/p_d_p_app/coming_soon_page/coming_soon_page_widget.dart'
     show ComingSoonPageWidget;
+export '/p_d_p_app/NFC/nfc_page.dart' show NFCPage;
